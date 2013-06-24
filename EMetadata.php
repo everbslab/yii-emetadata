@@ -95,9 +95,18 @@ class EMetadata extends CApplicationComponent
                 $actions[] = $matches[1];
             }
         }
+		
+        // пробуем достать из actions()
+        $class = Yii::import($path.'.'. basename($controller), true);
+        $class = new $class('class');
+        $map = call_user_func(array($class, 'actions'));
+        if(!empty($map)) {
+            foreach($map as $cactionKey => $func) {
+                $actions[] = $cactionKey;
+            }
+        }		
 
         return $actions;
-
     }
 
     /**
